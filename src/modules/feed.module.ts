@@ -4,6 +4,11 @@ import { FeedService } from '../domain/service/feed.service';
 
 @Module({
   controllers: [FeedController],
-  providers: [FeedService],
+  providers: [
+    {
+      provide: 'FeedServiceInterface',
+      useClass: FeedService,
+    },
+  ],
 })
 export class FeedModule {}

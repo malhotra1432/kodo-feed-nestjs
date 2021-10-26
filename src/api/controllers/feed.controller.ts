@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
-import { FeedService } from '../../domain/service/feed.service';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { FeedServiceInterface } from '../../domain/ports/service/feed.service.interface';
 
 @Controller('api/v1/feeds')
 export class FeedController {
-  constructor(private readonly feedService: FeedService) {}
+  constructor(
+    @Inject('FeedServiceInterface')
+    private readonly feedService: FeedServiceInterface,
+  ) {}
   @Get()
   getHello(): string {
     return this.feedService.getHello();

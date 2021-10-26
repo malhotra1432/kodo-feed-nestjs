@@ -8,7 +8,12 @@ describe('FeedController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FeedController],
-      providers: [FeedService],
+      providers: [
+        {
+          provide: 'FeedServiceInterface',
+          useClass: FeedService,
+        },
+      ],
     }).compile();
 
     controller = module.get<FeedController>(FeedController);
