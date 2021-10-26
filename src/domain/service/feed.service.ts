@@ -13,9 +13,7 @@ export class FeedService implements FeedServiceInterface {
     return this.feedDomainRepository.getHello();
   }
 
-  async storeFeed(createFeedCommand: CreateFeedCommand): Promise<void> {
-    await this.feedDomainRepository.storeFeed(
-      CreateFeedCommand.toCreateFeed(createFeedCommand),
-    );
+  async storeFeed(createFeedCommands: Array<CreateFeedCommand>): Promise<void> {
+    await this.feedDomainRepository.storeFeed(createFeedCommands);
   }
 }

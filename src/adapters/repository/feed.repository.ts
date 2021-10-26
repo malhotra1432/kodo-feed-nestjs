@@ -3,6 +3,8 @@ import { FeedDomain } from '../../domain/feed.domain';
 import { InjectModel } from '@nestjs/mongoose';
 import { Feed, FeedDocument } from '../schema/feed.schema';
 import { Model } from 'mongoose';
+import { CreateFeedCommand } from '../../domain/command/create.feed.command';
+import { CreateFeedsMessage } from '../../message/create.feeds.message';
 
 export class FeedRepository implements FeedDomainRepository {
   constructor(
@@ -13,11 +15,13 @@ export class FeedRepository implements FeedDomainRepository {
     return 'Hello World!';
   }
 
-  async storeFeed(feedDomain: FeedDomain): Promise<void> {
-    const newFeed = new this.feedsSchemaModel(
-      FeedRepository.toCreateFeed(feedDomain),
-    );
-    await newFeed.save();
+  async storeFeed(feedDomains: Array<FeedDomain>): Promise<void> {
+    for (const feedDomain of feedDomains) {
+      const newFeed = new this.feedsSchemaModel(
+        FeedRepository.toCreateFeed(feedDomain),
+      );
+      await newFeed.save();
+    }
   }
 
   private static toCreateFeed(feedDomain: FeedDomain): Feed {
