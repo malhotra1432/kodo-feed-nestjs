@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FeedController } from './feed.controller';
 import { FeedService } from '../../domain/service/feed.service';
+import { FeedRepository } from '../../adapters/repository/feed.repository';
 
 describe('FeedController', () => {
   let controller: FeedController;
@@ -12,6 +13,10 @@ describe('FeedController', () => {
         {
           provide: 'FeedServiceInterface',
           useClass: FeedService,
+        },
+        {
+          provide: 'FeedDomainRepository',
+          useClass: FeedRepository,
         },
       ],
     }).compile();
