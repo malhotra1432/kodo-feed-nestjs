@@ -1,35 +1,30 @@
 import { FeedDomainRepository } from '../../domain/ports/repository/feed.domain.repository';
 import { FeedDomain } from '../../domain/feed.domain';
-import { InjectModel } from '@nestjs/mongoose';
-import { Feed, FeedDocument } from '../schema/feed.schema';
-import { Model } from 'mongoose';
-import { CreateFeedCommand } from '../../domain/command/create.feed.command';
-import { CreateFeedsMessage } from '../../message/create.feeds.message';
+import { FeedEntity } from '../entity/FeedEntity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export class FeedRepository implements FeedDomainRepository {
   constructor(
-    @InjectModel(Feed.name)
-    private readonly feedsSchemaModel: Model<FeedDocument>,
+    @InjectRepository(FeedEntity)
+    private feedEntityRepository: Repository<FeedEntity>,
   ) {}
-  getHello(): string {
-    return 'Hello World!';
-  }
 
-  async storeFeed(feedDomains: Array<FeedDomain>): Promise<void> {
-    for (const feedDomain of feedDomains) {
-      const newFeed = new this.feedsSchemaModel(
-        FeedRepository.toCreateFeed(feedDomain),
-      );
-      await newFeed.save();
-    }
-  }
-
-  private static toCreateFeed(feedDomain: FeedDomain): Feed {
+  private static encode(feedDomain: FeedDomain): FeedEntity {
     return {
+      _id: undefined,
       name: feedDomain.name.getName(),
       image: feedDomain.image.getImage(),
       description: feedDomain.description.getDescription(),
       dateLastEdited: feedDomain.dateLastEdited,
     };
+  }
+
+  save(feedDomains: Array<FeedDomain>) {
+    const feeds = [];
+    for (const feedDomain of feedDomains) {
+      feeds.push(FeedRepository.encode(feedDomain));
+    }
+    return this.feedEntityRepository.save(feeds);
   }
 }

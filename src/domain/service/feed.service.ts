@@ -9,11 +9,8 @@ export class FeedService implements FeedServiceInterface {
     @Inject('FeedDomainRepository')
     private readonly feedDomainRepository: FeedDomainRepository,
   ) {}
-  getHello(): string {
-    return this.feedDomainRepository.getHello();
-  }
 
   async storeFeed(createFeedCommands: Array<CreateFeedCommand>): Promise<void> {
-    await this.feedDomainRepository.storeFeed(createFeedCommands);
+    await this.feedDomainRepository.save(createFeedCommands);
   }
 }
