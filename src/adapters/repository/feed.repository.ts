@@ -13,10 +13,10 @@ export class FeedRepository implements FeedDomainRepository {
   private static encode(feedDomain: FeedDomain): FeedEntity {
     return {
       _id: undefined,
-      name: feedDomain.name.getName(),
-      image: feedDomain.image.getImage(),
-      description: feedDomain.description.getDescription(),
-      dateLastEdited: feedDomain.dateLastEdited,
+      name: feedDomain.getState().name.getName(),
+      image: feedDomain.getState().image.getImage(),
+      description: feedDomain.getState().description.getDescription(),
+      dateLastEdited: feedDomain.getState().dateLastEdited,
     };
   }
 

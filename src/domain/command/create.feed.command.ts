@@ -1,7 +1,7 @@
-import { FeedDomain } from '../feed.domain';
 import { Name } from '../value/name';
 import { FeedImage } from '../value/feed.image';
 import { Description } from '../value/description';
+import { FeedState } from '../feed.state';
 
 export class CreateFeedCommand {
   name: Name;
@@ -21,12 +21,12 @@ export class CreateFeedCommand {
     this.dateLastEdited = dateLastEdited;
   }
 
-  public static toCreateFeed(createFeedCommand: CreateFeedCommand): FeedDomain {
-    return new FeedDomain(
-      createFeedCommand.name,
-      createFeedCommand.image,
-      createFeedCommand.description,
-      createFeedCommand.dateLastEdited,
-    );
+  public toFeedState(): FeedState {
+    return {
+      name: this.name,
+      image: this.image,
+      description: this.description,
+      dateLastEdited: this.dateLastEdited,
+    };
   }
 }

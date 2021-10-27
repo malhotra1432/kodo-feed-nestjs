@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { FeedServiceInterface } from '../ports/service/feed.service.interface';
 import { FeedDomainRepository } from '../ports/repository/feed.domain.repository';
 import { CreateFeedCommand } from '../command/create.feed.command';
+import { FeedDomain } from '../feed.domain';
 
 @Injectable()
 export class FeedService implements FeedServiceInterface {
@@ -11,6 +12,10 @@ export class FeedService implements FeedServiceInterface {
   ) {}
 
   async storeFeed(createFeedCommands: Array<CreateFeedCommand>): Promise<void> {
-    await this.feedDomainRepository.save(createFeedCommands);
+    const feeds = [];
+    for (const command of createFeedCommands) {
+      feeds.push(FeedDomain.create(command));
+    }
+    await this.feedDomainRepository.save(feeds);
   }
 }

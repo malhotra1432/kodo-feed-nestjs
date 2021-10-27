@@ -9,15 +9,16 @@ export class FeedController {
     private readonly feedService: FeedServiceInterface,
   ) {}
 
-  @Post()
+  @Post('/store')
   async storeFeed(
     @Body() createFeedsMessage: Array<CreateFeedsMessage>,
   ): Promise<void> {
-    const createFeedCommands = [];
+    const createFeedCommand = [];
     for (const feedMessage of createFeedsMessage) {
-      const items = CreateFeedsMessage.toCreateFeedCommand(feedMessage);
-      createFeedCommands.push(items);
+      createFeedCommand.push(
+        CreateFeedsMessage.toCreateFeedCommand(feedMessage),
+      );
     }
-    await this.feedService.storeFeed(createFeedCommands);
+    await this.feedService.storeFeed(createFeedCommand);
   }
 }

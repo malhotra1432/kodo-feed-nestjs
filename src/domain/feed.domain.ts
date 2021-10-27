@@ -1,22 +1,21 @@
-import { Name } from './value/name';
-import { FeedImage } from './value/feed.image';
-import { Description } from './value/description';
+import { FeedState } from './feed.state';
+import { CreateFeedCommand } from './command/create.feed.command';
 
 export class FeedDomain {
-  name: Name;
-  image: FeedImage;
-  description: Description;
-  dateLastEdited: Date;
+  private readonly state: FeedState;
 
-  constructor(
-    name: Name,
-    image: FeedImage,
-    description: Description,
-    dateLastEdited: Date,
-  ) {
-    this.name = name;
-    this.image = image;
-    this.description = description;
-    this.dateLastEdited = dateLastEdited;
+  constructor(state: FeedState) {
+    this.state = state;
+  }
+
+  public static create(createFeed: CreateFeedCommand): FeedDomain {
+    return this.stateToDomain(createFeed.toFeedState());
+  }
+
+  public static stateToDomain(feedState: FeedState): FeedDomain {
+    return new FeedDomain(feedState);
+  }
+  getState(): FeedState {
+    return this.state;
   }
 }
