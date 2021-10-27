@@ -3,27 +3,19 @@ import { FeedDomain } from '../../domain/feed.domain';
 import { FeedEntity } from '../entity/FeedEntity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FeedStateAdapter } from '../codec/feed.state.adapter';
 
 export class FeedRepository implements FeedDomainRepository {
   constructor(
+    private feedStateAdapter: FeedStateAdapter,
     @InjectRepository(FeedEntity)
     private feedEntityRepository: Repository<FeedEntity>,
   ) {}
 
-  private static encode(feedDomain: FeedDomain): FeedEntity {
-    return {
-      _id: undefined,
-      name: feedDomain.getState().name.getName(),
-      image: feedDomain.getState().image.getImage(),
-      description: feedDomain.getState().description.getDescription(),
-      dateLastEdited: feedDomain.getState().dateLastEdited,
-    };
-  }
-
   save(feedDomains: Array<FeedDomain>) {
     const feeds = [];
     for (const feedDomain of feedDomains) {
-      feeds.push(FeedRepository.encode(feedDomain));
+      feeds.push(this.feedStateAdapter.encode(feedDomain));
     }
     return this.feedEntityRepository.save(feeds);
   }
