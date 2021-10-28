@@ -8,7 +8,6 @@ import { Description } from '../../domain/value/description';
 export class FeedStateAdapter {
   static encode(feedDomain: FeedDomain): FeedEntity {
     return {
-      _id: undefined,
       name: feedDomain.getState().name.getName(),
       image: feedDomain.getState().image.getImage(),
       description: feedDomain.getState().description.getDescription(),

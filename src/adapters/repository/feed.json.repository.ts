@@ -1,7 +1,7 @@
 import { FeedEntity } from '../entity/FeedEntity';
 import { readFile, writeFile } from 'fs/promises';
 
-export class FeedOrmRepository {
+export class FeedJsonRepository {
   static async save(data: Array<FeedEntity>) {
     await writeFile('./feed.json', JSON.stringify(data), {
       encoding: 'utf8',
