@@ -6,7 +6,7 @@ import { Name } from '../../domain/value/name';
 import { Description } from '../../domain/value/description';
 
 export class FeedStateAdapter {
-  encode(feedDomain: FeedDomain): FeedEntity {
+  static encode(feedDomain: FeedDomain): FeedEntity {
     return {
       _id: undefined,
       name: feedDomain.getState().name.getName(),
@@ -16,7 +16,7 @@ export class FeedStateAdapter {
     };
   }
 
-  decode(feedEntity: FeedEntity): FeedState {
+  static decode(feedEntity: FeedEntity): FeedState {
     return {
       name: Name.create(feedEntity.name),
       image: FeedImage.create(feedEntity.image),
