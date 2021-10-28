@@ -2,7 +2,6 @@ import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { FeedServiceInterface } from '../../domain/ports/service/feed.service.interface';
 import { CreateFeedsMessage } from '../../message/create.feeds.message';
 import { FeedEntity } from '../../adapters/entity/FeedEntity';
-import { CreateFeedCommand } from '../../domain/command/create.feed.command';
 
 @Controller('api/v1/feeds')
 export class FeedController {
