@@ -1,6 +1,7 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { FeedServiceInterface } from '../../domain/ports/service/feed.service.interface';
 import { CreateFeedsMessage } from '../../message/create.feeds.message';
+import { FeedEntity } from '../../adapters/entity/FeedEntity';
 
 @Controller('api/v1/feeds')
 export class FeedController {
@@ -8,6 +9,11 @@ export class FeedController {
     @Inject('FeedServiceInterface')
     private readonly feedService: FeedServiceInterface,
   ) {}
+
+  @Get('/search')
+  async searchFeeds(): Promise<Array<FeedEntity>> {
+    return await this.feedService.findAll();
+  }
 
   @Post('/store')
   async storeFeed(
