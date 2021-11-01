@@ -8,27 +8,26 @@
 ## Installation
 
 ```bash
-$ ./go install
+ ./go install
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ ./go run
+ ./go run
 
 # watch mode
-$ ./go runDev
+ ./go runDev
 
 ## Test
 
-```bash
 # unit tests
-$ ./go test
+ ./go test
 
 # e2e tests
-$ ./go teste2e
+ ./go teste2e
 
 # test coverage
-$ ./go testCov
+ ./go testCov
 ```
