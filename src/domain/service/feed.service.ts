@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { FeedServiceInterface } from '../ports/service/feed.service.interface';
 import { FeedDomainRepository } from '../ports/repository/feed.domain.repository';
 import { CreateFeedCommand } from '../command/create.feed.command';
@@ -17,10 +17,24 @@ export class FeedService implements FeedServiceInterface {
     for (const command of createFeedCommands) {
       feeds.push(FeedDomain.create(command));
     }
-    await this.feedDomainRepository.save(feeds);
+    try {
+      await this.feedDomainRepository.save(feeds);
+    } catch (e) {
+      throw new HttpException(
+        'Unable to store feed data ',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async findAll(): Promise<Array<FeedEntity>> {
-    return await this.feedDomainRepository.findAll();
+    try {
+      return await this.feedDomainRepository.findAll();
+    } catch (e) {
+      throw new HttpException(
+        'Unable to fetch feed data ' + e,
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 }

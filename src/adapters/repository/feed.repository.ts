@@ -12,6 +12,7 @@ export class FeedRepository implements FeedDomainRepository {
   ) {
     this.feedJsonOrmRepository = feedJsonOrmRepository;
   }
+
   async save(feedDomains: Array<FeedDomain>) {
     const feeds = [];
     for (const feedDomain of feedDomains) {
