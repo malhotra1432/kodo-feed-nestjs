@@ -24,8 +24,8 @@ export class FeedController {
   @Get('/search')
   async searchFeeds(@Res() response: Response) {
     this.logger.log('Fetching all feeds... ');
-    const feedStateArray = await this.feedService.findAll();
-    return response.json(FeedResponse.feedResponseBuilder(feedStateArray));
+    const feedStateList = await this.feedService.findAll();
+    return response.json(FeedResponse.feedResponseBuilder(feedStateList));
   }
 
   @Post('/store')
@@ -40,8 +40,8 @@ export class FeedController {
         CreateFeedsMessage.toCreateFeedCommand(feedMessage),
       );
     }
-    this.logger.log('Storing feeds done ');
     await this.feedService.storeFeed(createFeedCommand);
+    this.logger.log('Storing feeds done ');
     response
       .status(HttpStatus.CREATED)
       .json({ message: 'Feed data stored successfully! ' });
