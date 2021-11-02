@@ -10,6 +10,11 @@
  ./go install
 ```
 
+## If you have permission issue in accessing `go`
+```bash 
+chmod 744 ./go
+```
+
 ## Running the app
 
 ```bash
