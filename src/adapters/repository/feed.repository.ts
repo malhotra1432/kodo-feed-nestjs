@@ -1,9 +1,9 @@
 import { FeedDomainRepository } from '../../domain/ports/repository/feed.domain.repository';
 import { FeedDomain } from '../../domain/feed.domain';
 import { FeedStateAdapter } from '../codec/feed.state.adapter';
-import { FeedEntity } from '../entity/FeedEntity';
 import { FeedJsonOrmRepository } from './orm/feed.json.orm.repository';
 import { Inject } from '@nestjs/common';
+import { FeedState } from '../../domain/feed.state';
 
 export class FeedRepository implements FeedDomainRepository {
   constructor(
@@ -21,7 +21,12 @@ export class FeedRepository implements FeedDomainRepository {
     return this.feedJsonOrmRepository.save(feeds);
   }
 
-  async findAll(): Promise<Array<FeedEntity>> {
-    return this.feedJsonOrmRepository.findAll();
+  async findAll(): Promise<Array<FeedState>> {
+    const feedState = [];
+    const feedEntityList = await this.feedJsonOrmRepository.findAll();
+    for (const feedEntity of feedEntityList) {
+      feedState.push(FeedStateAdapter.decode(feedEntity));
+    }
+    return feedState;
   }
 }

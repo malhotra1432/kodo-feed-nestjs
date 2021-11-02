@@ -1,7 +1,7 @@
-import { CreateFeedCommand } from '../domain/command/create.feed.command';
-import { Name } from '../domain/value/name';
-import { Description } from '../domain/value/description';
-import { FeedImage } from '../domain/value/feed.image';
+import { CreateFeedCommand } from '../../../domain/command/create.feed.command';
+import { Name } from '../../../domain/value/name';
+import { Description } from '../../../domain/value/description';
+import { FeedImage } from '../../../domain/value/feed.image';
 
 export class CreateFeedsMessage {
   name: string;

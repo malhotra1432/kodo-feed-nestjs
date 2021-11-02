@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Inject, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Inject,
+  Logger,
+  Post,
+  Res,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { FeedServiceInterface } from '../../domain/ports/service/feed.service.interface';
-import { CreateFeedsMessage } from '../../message/create.feeds.message';
-import { FeedEntity } from '../../adapters/entity/FeedEntity';
+import { CreateFeedsMessage } from '../model/message/create.feeds.message';
+import { FeedResponse } from '../model/response/feed.response';
 
 @Controller('api/v1/feeds')
 export class FeedController {
@@ -12,15 +22,17 @@ export class FeedController {
   ) {}
 
   @Get('/search')
-  async searchFeeds(): Promise<Array<FeedEntity>> {
+  async searchFeeds(@Res() response: Response) {
     this.logger.log('Fetching all feeds... ');
-    return await this.feedService.findAll();
+    const feedStateArray = await this.feedService.findAll();
+    return response.json(FeedResponse.feedResponseBuilder(feedStateArray));
   }
 
   @Post('/store')
   async storeFeed(
     @Body() createFeedsMessage: Array<CreateFeedsMessage>,
-  ): Promise<void> {
+    @Res() response: Response,
+  ) {
     this.logger.log('Storing feeds... ');
     const createFeedCommand = [];
     for (const feedMessage of createFeedsMessage) {
@@ -30,5 +42,8 @@ export class FeedController {
     }
     this.logger.log('Storing feeds done ');
     await this.feedService.storeFeed(createFeedCommand);
+    response
+      .status(HttpStatus.CREATED)
+      .json({ message: 'Feed data stored successfully! ' });
   }
 }
